@@ -13,7 +13,7 @@
 <p>
     <strong>Image:</strong>
     <% @post.images.each do |uploaded| %>
-      <%= image_tag uploaded.image.url %>
+      <%= image_tag uploaded.image.url(:medium) %>
     <% end %>
   </p>
 
