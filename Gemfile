@@ -37,6 +37,12 @@ gem "paperclip", "~> 5.0.0"
 gem "figaro"
 gem 'aws-sdk', '~> 2.3'
 gem 'dotenv-rails'
+gem "react_on_rails", "9.0.0"
+gem "webpacker", "~> 3.0"
+gem "foreman"
+gem 'bootstrap-sass', '~> 3.3.6'
+gem 'jquery-rails'
+gem 'rails_12factor', group: :production
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -44,6 +50,9 @@ group :development, :test do
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 2.13'
   gem 'selenium-webdriver'
+  gem 'pry'
+  gem 'pry-rails'
+  gem 'pry-byebug'
 end
 
 group :development do
@@ -57,3 +66,5 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+
+gem 'mini_racer', platforms: :ruby
