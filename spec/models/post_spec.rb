@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 describe Post do 
+  let!(:post) { create(:post) }
+
   subject { described_class.new(
     title: 'TenderLove',
     content: 'I love my cats'
