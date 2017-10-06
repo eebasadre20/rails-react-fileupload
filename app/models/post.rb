@@ -5,6 +5,5 @@ class Post < ApplicationRecord
 
   validates :title, presence: true
   validates :content, presence: true
-  validates :image_base64, presence: true
-  validates :image_id, presence: true, on: :update
+  validates :image_base64, presence: true, on: :create
 end
