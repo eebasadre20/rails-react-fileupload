@@ -52,7 +52,6 @@ export default class EditPost extends React.Component {
 
   onButtonSubmit = (e) => {
     e.preventDefault();
-    document.getElementById('submitButton').setAttribute('disabled', 'disabled');
     ReactDOM.findDOMNode(this.refs.progressBarDiv).style.display = 'block';
       const config = {
         onUploadProgress: function(progressEvent) {
