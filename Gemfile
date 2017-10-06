@@ -53,6 +53,9 @@ group :development, :test do
   gem 'pry'
   gem 'pry-rails'
   gem 'pry-byebug'
+  gem 'rspec-rails'
+  gem 'factory_girl_rails', '~> 4.8.0'
+  gem 'rspec-json_expectations'
 end
 
 group :development do
