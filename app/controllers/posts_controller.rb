@@ -1,5 +1,6 @@
 class PostsController < ApplicationController
   before_action :set_post, only: [:show, :edit, :update, :destroy]
+  
 
   def index
     @posts = Post.all
@@ -17,24 +18,25 @@ class PostsController < ApplicationController
   end
 
   def create
+    Post.transaction do
       @post = Post.create!(post_params)
-      @post.images.create!( image: encode_base64(post_params) )
+      @post.images.create!( image: encode_base64(post_params) ) 
 
       render json: @post, status: :created
-  rescue ActiveRecord::RecordInvalid => e
-    render json: { message: e.record.errors.full_messages } , status: :unprocessable_entity 
+    end
   end
 
   def update
     Post.transaction do
       @post.update!( post_params )
-      uploaded_image = @post.images.find_by!( id: params[:post][:image_id])
-      uploaded_image.update!( imageable: @post, image: encode_base64(post_params) )
+
+      if params[:post][:image_base64].present? && params[:post][:image_id].present?
+        uploaded_image = @post.images.find_by!( id: params[:post][:image_id])
+        uploaded_image.update!( imageable: @post, image: encode_base64(post_params) )
+      end
 
       render json: @post, status: :ok
     end
-  rescue ActiveRecord::Rollback, ActiveRecord::RecordNotFound, ActiveRecord::RecordInvalid => e
-    render json: { message: e.message } , status: :unprocessable_entity 
   end
 
   def destroy
@@ -60,7 +62,7 @@ class PostsController < ApplicationController
       if data && data[:image_base64].present?
         #data[:upload] = generate_file_from_base64(data)
         png_file = data[:image_base64]
-        png_file.slice! "data:image/jpeg;base64,"
+        png_file.gsub!(/(data:image\/jpeg;base64,|data:image\/png;base64,)/, "" )
         png_file = Base64.decode64( png_file )
         file = Tempfile.new( [SecureRandom.uuid,'.jpeg'], "#{Rails.root}/tmp")
         file.binmode
