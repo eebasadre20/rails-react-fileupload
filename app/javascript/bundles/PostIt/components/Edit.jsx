@@ -110,7 +110,7 @@ export default class EditPost extends React.Component {
                     <textarea value={this.post.content} onChange={this.onContentChange}></textarea><br />
                   </div>
                 </div>
-                <span id="submitButton" onClick={this.onButtonSubmit}>Create Post</span>
+                <button type="submit" onClick={this.onButtonSubmit}> Update Post </button>
             </form>
           </div>
         </div>

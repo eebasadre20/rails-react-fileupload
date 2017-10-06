@@ -8,4 +8,5 @@ class Picture < ApplicationRecord
 
   validates_attachment_content_type :image, 
     :content_type => ['image/jpeg','image/png','image/x-png', 'image/gif']
+  validates_attachment_size :upload, :less_than => 2000.kilobytes, :message => 'Uploaded image exceeded allowable image size of 2MB.'
 end
