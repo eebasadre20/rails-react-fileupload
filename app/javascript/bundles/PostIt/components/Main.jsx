@@ -1,10 +1,5 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {
-  BrowserRouter as Router,
-  Route,
-  Link
-} from 'react-router-dom';
 import axios from 'axios';
 
 import NewPost from './NewPost';
@@ -27,7 +22,6 @@ export default class Main extends React.Component {
 
   render() {
     return (
-      <Router>
         <div>
           <h3>
             POST IT
@@ -51,10 +45,7 @@ export default class Main extends React.Component {
               )}
             </div>
           </div>
-
-          <Route path="/post/new" component={NewPost}/>
         </div>
-      </Router>
     );
   }
 }
