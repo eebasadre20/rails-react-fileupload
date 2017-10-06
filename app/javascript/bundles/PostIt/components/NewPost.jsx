@@ -55,7 +55,7 @@ export default class NewPost extends React.Component {
           }.bind(this)
       }
 
-      return axios.post('https://justpostit.herokuapp.com/posts', {
+      return axios.post('http://localhost:3000/posts', {
           post: {
               title: this.title,
               content: this.content,
@@ -73,6 +73,7 @@ export default class NewPost extends React.Component {
             this.title = '';
             this.content = '';
             this.file = {};
+            window.location.replace("https://justpostit.herokuapp.com/");
         }, 3000);
       }).catch( error => {
           console.log( error );
