@@ -1,7 +1,10 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Picture do
-  it 'is not valid without a title' do
-    
-  end
+  it { should belong_to(:imageable) }
+  it { should have_attached_file(:image) }
+  it { should validate_attachment_content_type(:image).
+        allowing('image/jpeg','image/png','image/x-png', 'image/gif') }
+  it { should validate_attachment_size(:image).
+        less_than(2.megabytes) }
 end
