@@ -4,4 +4,5 @@ class Post < ApplicationRecord
   attr_accessor :image_base64, :image_id
 
   validates :title, presence: true
+  validates :content, presence: true
 end
