@@ -63,7 +63,7 @@ export default class EditPost extends React.Component {
           }.bind(this)
       }
 
-      return axios.put(`http://localhost:3000/posts/${this.post.id}.json`, {
+      return axios.put(`https://justpostit.herokuapp.com/posts/${this.post.id}.json`, {
           post: {
               title: this.post.title,
               content: this.post.content,

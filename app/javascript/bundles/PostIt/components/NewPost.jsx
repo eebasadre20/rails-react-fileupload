@@ -55,7 +55,7 @@ export default class NewPost extends React.Component {
           }.bind(this)
       }
 
-      return axios.post('http://localhost:3000/posts', {
+      return axios.post('https://justpostit.herokuapp.com/posts', {
           post: {
               title: this.title,
               content: this.content,
