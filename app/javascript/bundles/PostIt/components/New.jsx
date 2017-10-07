@@ -63,7 +63,7 @@ export default class NewPost extends React.Component {
           }.bind(this)
       }
 
-      return axios.post('http://localhost:3000/posts.json', {
+      return axios.post('https://justpostit.herokuapp.com/posts.json', {
           post: {
               title: this.state.title,
               content: this.state.content,
@@ -78,10 +78,7 @@ export default class NewPost extends React.Component {
             ReactDOM.findDOMNode(this.refs.progressBarDiv).style.display = 'none';
             this.percentCompleted = 0;
             ReactDOM.findDOMNode(this.refs.progressBar).style.width = `${this.percentCompleted}%`;
-            this.title = '';
-            this.content = '';
-            this.file = {};
-            window.location.replace("http://localhost:3000/");
+            window.location.replace("https://justpostit.herokuapp.com");
         }, 3000);
       }).catch(  error => {
         const formErrors = error.response.data;
