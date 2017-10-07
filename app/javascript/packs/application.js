@@ -9,12 +9,10 @@
 
 import ReactOnRails from 'react-on-rails';
 
-import Main from '../bundles/PostIt/components/Main';
 import Edit from '../bundles/PostIt/components/Edit';
-import New from '../bundles/PostIt/components/NewPost'
+import New from '../bundles/PostIt/components/New'
 // This is how react_on_rails can see the HelloWorld in the browser.
 ReactOnRails.register({
-  Main,
   New,
   Edit,
 });

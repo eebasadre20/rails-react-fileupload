@@ -3,7 +3,7 @@ class PostsController < ApplicationController
   
 
   def index
-    @posts = Post.all
+    @posts = Post.includes([:images]).all
   end
 
   def show
@@ -60,9 +60,8 @@ class PostsController < ApplicationController
 
     def encode_base64( data )
       if data && data[:image_base64].present?
-        #data[:upload] = generate_file_from_base64(data)
         png_file = data[:image_base64]
-        png_file.gsub!(/(data:image\/jpeg;base64,|data:image\/png;base64,)/, "" )
+        png_file.gsub!(/(data:image\/jpeg;base64,|data:image\/png;base64,|data:image\/jpg;base64,)/, "" )
         png_file = Base64.decode64( png_file )
         file = Tempfile.new( [SecureRandom.uuid,'.jpeg'], "#{Rails.root}/tmp")
         file.binmode

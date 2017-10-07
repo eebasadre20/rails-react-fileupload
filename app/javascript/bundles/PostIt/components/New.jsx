@@ -6,51 +6,41 @@ import axios from 'axios';
 import { FormErrors } from './FormErrors';
 import { Header } from './Header';
 
-export default class EditPost extends React.Component {
+export default class NewPost extends React.Component {
 
   title = "";
   content = "";
   file = {};
   imageBase64 = "";
   percentCompleted = 0;
-  post = {};
-  uploadedImage = {};
-
+  formErrors = [];
+  
   constructor(props) {
       super(props);
-      this.onTitleChange = this.onTitleChange.bind(this);
-      this.onContentChange = this.onContentChange.bind(this);
       this.onFileSelect = this.onFileSelect.bind(this);
       this.onButtonSubmit = this.onButtonSubmit.bind(this);
 
-      this.post = this.props.post;
-      this.uploadedImage = this.props.uploaded_image.shift();
-
       this.state = {
-        title: this.props.post.title,
-        content: this.props.post.content,
+        title: '',
+        content: '',
         formErrors: [],
         titleValid: false,
         contentValid: false,
-        imageBase64: false,
+        imageBase64Valid: false,
         image_base64: false,
         formValid: false
       }
   }
 
-  onTitleChange( e ) {
-    this.state.title = e.target.value;
-    this.forceUpdate();
+  onHandleUserInput = ( e ) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    this.setState({[name]: value });
   }
 
-  onContentChange( e ) {
-    this.state.content = e.target.value;
-    this.forceUpdate();
-  }
-
-
-  onFileSelect = (files) => {
-		const reader = new FileReader();
+  onFileSelect(files) {
+      const reader = new FileReader();
+    
       this.file = files.shift();
 
       reader.onload = (event) => {
@@ -60,8 +50,9 @@ export default class EditPost extends React.Component {
       this.forceUpdate();
   }
 
-  onButtonSubmit = (e) => {
+  onButtonSubmit( e ) {
     e.preventDefault();
+
     ReactDOM.findDOMNode(this.refs.progressBarDiv).style.display = 'block';
       const config = {
         onUploadProgress: function(progressEvent) {
@@ -72,26 +63,27 @@ export default class EditPost extends React.Component {
           }.bind(this)
       }
 
-      return axios.put(`http://localhost:3000/posts/${this.post.id}.json`, {
+      return axios.post('http://localhost:3000/posts.json', {
           post: {
               title: this.state.title,
               content: this.state.content,
-							image_base64: this.imageBase64,
-							image_id: this.uploadedImage.id
+              image_base64: this.imageBase64
           }
       }, config ).then( response => {
-				this.percentCompleted = 100;
+        this.percentCompleted = 100;
         ReactDOM.findDOMNode(this.refs.progressBar).style.width = `${this.percentCompleted}%`;
+        this.refs.newPost.reset();
+        
         setTimeout(() => {
-            this.percentCompleted = 0;
             ReactDOM.findDOMNode(this.refs.progressBarDiv).style.display = 'none';
+            this.percentCompleted = 0;
             ReactDOM.findDOMNode(this.refs.progressBar).style.width = `${this.percentCompleted}%`;
             this.title = '';
             this.content = '';
             this.file = {};
             window.location.replace("http://localhost:3000/");
         }, 3000);
-      }).catch( error => {
+      }).catch(  error => {
         const formErrors = error.response.data;
         this.validateFormField( formErrors );
         this.setState({ formErrors: formErrors });
@@ -128,51 +120,52 @@ export default class EditPost extends React.Component {
   }
 
   render() {
-      return (
-        <div>
-          <Header />
-          <FormErrors formErrors={ this.state.formErrors } />
+    return (
+      <div>
+        <Header />
 
-          <div className="row">
-            <div className="upload-form">
-              <div className="progress" ref={"progressBarDiv"} style={{ display: 'none', width: '100%' }}>
-                <div ref={"progressBar"} className="progress-bar progress-bar-striped" role="progressbar" style={ { width: '0%' } } aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
+        <div className="row">
+          <div className="upload-form">
+            <div className="progress" ref={"progressBarDiv"} style={{ display: 'none', width: '100%' }}>
+              <div ref={"progressBar"} className="progress-bar progress-bar-striped" role="progressbar" style={ { width: '0%' } } aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+
+              <FormErrors formErrors={ this.state.formErrors } />
 
               <form ref={'newPost'}>
+                <div className="row">
                   <div className="row">
-                    <div className="row">
-                      <Dropzone className="dropzone" onDrop={this.onFileSelect}>
-                          <img src={this.file.preview} style={{width: "100%"}} className={ `${this.errorClass(this.state.imageBase64Valid)}` }/>
-                      </Dropzone>
-                    </div>
-
-                    <div className="row">
-                      <div className="input">
-                        <label className="col-md-12">Title:</label>
-                        <div className="col-md-12">
-                          <input className={ `col-md-12 ${this.errorClass(this.state.titleValid)}` } type="text" value={this.state.title} onChange={this.onTitleChange} />
-                        </div>
-                      </div>
-
-                      <div className="input">
-                        <label className="col-md-12">Content:</label>
-                        <div className="col-md-12">
-                          <textarea className={ `col-md-12 ${this.errorClass(this.state.contentValid)}` } value={this.state.content}  onChange={this.onContentChange}></textarea>
-                        </div>
-                      </div>
-
-                    </div>
+                    <Dropzone className="dropzone" onDrop={this.onFileSelect}>
+                        <img src={this.file.preview} style={{width: "100%"}} className={ `${this.errorClass(this.state.imageBase64Valid)}` }/>
+                    </Dropzone>
                   </div>
+
                   <div className="row">
-                    <div className="upload-btn">
-                      <button type="submit" className="btn btn-primary btn-md btn-block" onClick={this.onButtonSubmit}> Update Post </button>
+                    <div className="input ">
+                      <label className="col-md-12">Title:</label>
+                      <div className="col-md-12">
+                        <input className={ `col-md-12 ${this.errorClass(this.state.titleValid)}` } type="text" name="title" onChange={this.onHandleUserInput} />
+                      </div>
                     </div>
+
+                    <div className="input">
+                      <label className="col-md-12">Content:</label>
+                      <div className="col-md-12">
+                        <textarea className={ `col-md-12 ${this.errorClass(this.state.contentValid)}` } name="content" onChange={this.onHandleUserInput}></textarea>
+                      </div>
+                    </div>
+
                   </div>
-              </form>
-            </div>
+                </div>
+                <div className="row">
+                  <div className="upload-btn">
+                    <button type="submit" className="btn btn-primary btn-md btn-block" onClick={this.onButtonSubmit}> Create Post </button>
+                  </div>
+                </div>
+            </form>
           </div>
         </div>
-      );
+      </div>
+    );
   }
 }

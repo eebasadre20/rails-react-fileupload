@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   rescue_from ActiveRecord::RecordNotFound, with: :render_not_found_response
 
   def render_unprocessable_entity_response(exception)
-    render json: exception.record.errors.full_messages, status: :unprocessable_entity
+    render json: exception.record.errors.messages, status: :unprocessable_entity
   end
 
   def render_not_found_response(exception)

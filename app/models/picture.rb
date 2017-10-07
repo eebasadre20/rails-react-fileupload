@@ -4,10 +4,10 @@ class Picture < ApplicationRecord
     default_style: :medium,
     styles: { medium: "300x300>", thumb: "100x100>" },
     url: ':s3_domain_url',
-    path: ':rails_root/public/system/:class/:attachment/:id_partition/:style/:filename'
+    path: '/:class/:attachment/:id_partition/:style/:filename'
 
   validates_attachment :image, 
-    content_type: { content_type: ['image/jpeg','image/png','image/x-png', 'image/jpg'] }
+    content_type: { content_type: ['image/jpeg','image/png', 'image/jpg'] }
   
     # Changing to exact bytes value because using the 2.megabytes will throw rspec error.
     validates_attachment_size :image, :less_than => 2097152, 
