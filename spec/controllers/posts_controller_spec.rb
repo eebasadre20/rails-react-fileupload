@@ -1,9 +1,10 @@
 require 'rails_helper'
 
 describe PostsController do
-  describe '#index' do
-
-  end
+  # TODO 
+  # 1. Mock S3 request here in spec
+  # 2. Use database cleaner for transaction clean up
+  # 3. Transfer those base64 data on a helper.
 
   describe '#create' do
     context 'when valid params' do
@@ -41,7 +42,7 @@ describe PostsController do
         end
 
         it 'returns error message on empty title' do
-          expect( JSON( response.body ) ).to include( "Title can't be blank" )
+          expect( JSON( response.body ) ).to eq( "title" => ["can't be blank"] )
         end
       end
 
@@ -61,7 +62,7 @@ describe PostsController do
         end
 
         it 'returns error message on content' do
-          expect( JSON( response.body ) ).to include( "Content can't be blank" )
+          expect( JSON( response.body )).to eq( "content" => ["can't be blank"] )
         end
       end
 
@@ -81,7 +82,7 @@ describe PostsController do
         end
 
         it 'returns error message on empty title' do
-          expect( JSON( response.body ) ).to include( "Image base64 can't be blank" )
+          expect( JSON( response.body ) ).to eq( "image_base64" => ["can't be blank"] )
         end
       end
     end
@@ -140,8 +141,8 @@ describe PostsController do
           end
 
           it 'return error message on title and content' do
-            expect( JSON( response.body ) ).to include( "Title can't be blank" )
-            expect( JSON( response.body ) ).to include( "Content can't be blank" )
+            expect( JSON( response.body ) ).to include( "title" => ["can't be blank"] )
+            expect( JSON( response.body ) ).to include( "content" => ["can't be blank"] )
           end
         end
 
@@ -161,7 +162,7 @@ describe PostsController do
           end
 
           it "returns error message on image format" do
-            expect( JSON( response.body ) ).to include( "Image content type is invalid" )
+            expect( JSON( response.body ) ).to include( "image_content_type"=>["is invalid"] )
           end
         end
 

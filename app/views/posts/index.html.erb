@@ -1,27 +1,37 @@
-<br>
+<nav class="navbar navbar-dark bg-dark justify-content-between">
+  <a class="navbar-brand">Just POST IT</a>
+  <div class="form-inline pull-right">
+    <%= link_to 'New Post', new_post_path , class: 'btn btn-outline-success my-2 my-sm-0 new-post' %>
+  </div>
+</nav>
 
-<%= link_to 'New Post', new_post_path %>
 <hr>
 
-<% @posts.each do | post | %>
-  <div className="row">
-    <div className="col-md-6 col-md-offset-3">
-        <div className="row">
+<div class="row">
+  <% @posts.each do | post | %>
+  <div class="col-md-4">
+      <div class="post">
+        <div class="image">
           <% post.images.each do | uploaded | %>
-            <div className="col-md-6">
               <%= image_tag uploaded.image.url(:medium) %>
-            </div>
           <% end %>
-          <div className="col-md-6">
-            <p> Title: <%= post.title %></p>
-            <p> Content: <%= post.content %></p>
+        </div>
+
+        <div class="title">
+            <h4 class="post-title"><%= post.title %></h4>
+        </div>
+
+        <div class="content">
+          <div class="post-content">
+              <p><%= post.content %></p>
           </div>
         </div>
+
+        <div class="actions row">
+            <%= link_to 'Edit', edit_post_path(post), class: 'btn-primary btn-sm btn' %>
+            <%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn-danger btn-sm btn'%>
+        </div>
+      </div>
     </div>
-  </div>
-  <td><%= link_to 'Edit', edit_post_path(post) %></td>
-  <td><%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  <br>
-  <br>
-  <hr>
-<% end %>
+  <% end %>
+</div>
