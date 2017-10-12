@@ -1,24 +1,7 @@
-# README
+Rails and React file upload Implentation.
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This is a quick and simple implementation that needs to be refactor.
+It uses react_on_rails gem and webpacker gem for react.js and webpack integration.
 
-Things you may want to cover:
 
-* Ruby version
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
